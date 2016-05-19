@@ -7,7 +7,9 @@
   ],
   "license": "MIT",
   "keywords": [
-    "next"
+    "scroll",
+    "infinite-scroll",
+    "angular"
   ],
   "homepage": "https://github.com/afeiship/angular-infinite-scroll",
   "moduleType": [
@@ -20,5 +22,8 @@
     "test",
     "tests",
     "src"
-  ]
+  ],
+  "dependencies": {
+    "angular": "^1.5.5"
+  }
 }
