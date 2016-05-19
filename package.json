@@ -1,0 +1,15 @@
+{
+  "name": "angular-infinite-scroll",
+  "version": "0.0.0",
+  "description": "AngularJS directive when the bottom of the directive&#39;s element approaches the bottom of the browser window, which can be used to implement infinite scrolling,you can use `click` or `pull` to load more data.",
+  "homepage": "https://github.com/afeiship/angular-infinite-scroll",
+  "author": {
+    "name": "afei",
+    "email": "1290657123@qq.com"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-load-plugins": "^1.2.0"
+  }
+}
