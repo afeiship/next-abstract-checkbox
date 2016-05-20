@@ -15,10 +15,9 @@
           items: '='
         },
         link: linkFn,
-        controller: ["$scope", '$q', function ($scope, $q) {
+        controller: ["$scope", function ($scope) {
           $scope.init = init;
           $scope.load = load;
-
 
           function init() {
 
@@ -59,15 +58,24 @@
               $scope.loading = false;
             });
           }
+
         }]
       };
 
 
-      function linkFn(scope, elem, attrs) {
+      function linkFn(scope, element, attrs) {
         scope.init();
 
+        var offset = parseInt(attrs.threshold) || 0;
+        var e = element[0];
 
+        element.bind('scroll', function () {
+          if (e.scrollTop + e.offsetHeight >= e.scrollHeight - offset) {
+            console.log('should scroll!');
+            //scope.$apply(attrs.infiniteScroll);
 
+          }
+        });
       }
 
     }]);

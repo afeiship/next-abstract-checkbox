@@ -16,15 +16,19 @@
           page: '=',
           rows: '=',
           loadData: '&',
+          responseHandler: '&',
           hasMore: '=',
           loading: '=',
           load: '=',
           items: '='
         },
         link: linkFn,
-        controller: ["$scope", '$q', function ($scope, $q) {
+        controller: ["$scope", function ($scope) {
           $scope.init = init;
           $scope.load = load;
+          $scope._addItems = _addItems;
+          $scope._setItems = _setItems;
+          $scope.responseHandler = $scope.responseHandler || _addItems;
 
 
           function init() {
@@ -61,19 +65,38 @@
 
             returned.then(function (response) {
               responseData = response.data;
-              $scope.items = $scope.items.concat(responseData);
+              $scope.responseHandler.call($scope, responseData);
               $scope.hasMore = (responseData.length === $scope.rows);
               $scope.loading = false;
-              console.log($scope);
-              //$scope.$apply();
             });
           }
+
+
+          function _addItems(inItems) {
+            $scope.items = $scope.items.concat(inItems);
+          }
+
+          function _setItems(inItems) {
+            $scope.items = inItems;
+          }
+
         }]
       };
 
 
-      function linkFn(scope, elem, attrs) {
+      function linkFn(scope, element, attrs) {
         scope.init();
+
+        var offset = parseInt(attrs.threshold) || 0;
+        var e = element[0];
+
+        element.bind('scroll', function () {
+          if (e.scrollTop + e.offsetHeight >= e.scrollHeight - offset) {
+            console.log('should scroll!');
+            //scope.$apply(attrs.infiniteScroll);
+
+          }
+        });
       }
 
     }]);

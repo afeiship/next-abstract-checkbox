@@ -17,6 +17,10 @@
       font-size: 12px;
     }
 
+    html, body, .data-list {
+      height: 100%;
+    }
+
     [ng-cloak] {
       display: none;
     }
@@ -37,20 +41,12 @@
     .data-list {
     }
 
-    .table-head {
-      margin-bottom: 50px;
-      width: 100%;
-      top: 0;
-      position: fixed;
-    }
-
     .table-head th {
       background: #eee;
       height: 50px;
     }
 
     .table-body {
-      margin-top: 50px;
       color: #666;
     }
 
@@ -64,42 +60,41 @@
 </head>
 <body ng-controller="MainCtrl as vm" ng-cloak>
 
-<h1>click to load more</h1>
-<div class="data-list">
-  <table border="1" class="table-head"
-         nx-infinite-scroll
-         page="vm.page"
-         rows="vm.rows"
-         has-more="vm.hasMore"
-         loading="vm.loading"
-         items="vm.items"
-         load="vm.load"
-         load-data="vm.loadData">
-    <thead>
-    <tr>
-      <th>id</th>
-      <th>姓名</th>
-      <th>年纪</th>
-      <th>昵称</th>
-      <th>创建日期</th>
-    </tr>
-    </thead>
-  </table>
-  <table border="1" class="table-body">
-    <tbody>
-    <tr ng-repeat="item in vm.items">
-      <td>{{item.id}}</td>
-      <td>{{item.name}}</td>
-      <td>{{item.age}}</td>
-      <td>{{item.nickname}}</td>
-      <td>{{item.date}}</td>
-    </tr>
-    </tbody>
-    <tr class="has-more" ng-if="vm.hasMore" ng-click="vm.load()">
-      <td colspan="5" ng-if="!vm.loading">加载更多</td>
-      <td colspan="5" ng-if="vm.loading">正在加载...</td>
-    </tr>
-  </table>
+<div class="data-list wrapper"
+     nx-infinite-scroll
+     page="vm.page"
+     rows="vm.rows"
+     has-more="vm.hasMore"
+     loading="vm.loading"
+     items="vm.items"
+     load="vm.load"
+     load-data="vm.loadData">
+  <div class="scroll">
+    <table border="1" class="table-body">
+      <thead>
+      <tr>
+        <th>id</th>
+        <th>姓名</th>
+        <th>年纪</th>
+        <th>昵称</th>
+        <th>创建日期</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="item in vm.items">
+        <td>{{item.id}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.age}}</td>
+        <td>{{item.nickname}}</td>
+        <td>{{item.date}}</td>
+      </tr>
+      </tbody>
+      <tr class="has-more" ng-if="vm.hasMore" ng-click="vm.load()">
+        <td colspan="5" ng-if="!vm.loading">加载更多</td>
+        <td colspan="5" ng-if="vm.loading">正在加载...</td>
+      </tr>
+    </table>
+  </div>
 </div>
 
 
@@ -112,14 +107,14 @@
       angular.extend(vm, {
         items: [],
         page: 1,
-        rows: 60,
+        rows: 30,
         loadData: _generateData,
         loading: false,
         hasMore: false
       });
 
       function _generateData() {
-        console.log('page:->', vm.page);
+        console.log('page:->', vm.page, vm.items.length);
         var items = [];
         var length = vm.rows || 100;
         for (var i = 0; i < length; i++) {
