@@ -9,7 +9,7 @@
   'use strict';
 
   angular.module('nx.widget')
-    .directive('nxInfiniteScroll', ['$timeout', function ($timeout) {
+    .directive('nxInfiniteScroll', ['$timeout', 'nxDebounce', function ($timeout, nxDebounce) {
       return {
         restrict: 'A',
         scope: {
@@ -80,16 +80,14 @@
           var distance = parseInt(attrs.distance) || 0;
           var debounce = parseInt(attrs.debounce) || 600;
           var el = element[0];
-          var timer = null;
 
           element.bind('scroll', function () {
-            $timeout.cancel(timer);
-            timer = $timeout(function () {   //Set timeout
+            nxDebounce(function(){
               if (el.scrollTop + el.offsetHeight >= el.scrollHeight - distance) {
-                //does nothing, if timeout alrdy done
-                scope.load();
+
+                  scope.load();
               }
-            }, debounce);
+            },debounce);
           });
         }
       }

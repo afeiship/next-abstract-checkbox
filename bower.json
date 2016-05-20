@@ -24,6 +24,8 @@
     "src"
   ],
   "dependencies": {
-    "angular": "^1.5.5"
+    "angular": "^1.5.5",
+    "angular-module-stiffener": "afeiship/angular-module-stiffener",
+    "angular-debounce": "afeiship/angular-debounce"
   }
 }
