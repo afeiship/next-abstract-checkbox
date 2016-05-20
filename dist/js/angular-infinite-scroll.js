@@ -1,6 +1,13 @@
 (function () {
   'use strict';
 
+  angular.module('nx.widget', []);
+
+})();
+
+(function () {
+  'use strict';
+
   angular.module('nx.widget')
     .directive('nxInfiniteScroll', [function ($scope) {
       return {
@@ -57,6 +64,8 @@
               $scope.items = $scope.items.concat(responseData);
               $scope.hasMore = (responseData.length === $scope.rows);
               $scope.loading = false;
+              console.log($scope);
+              //$scope.$apply();
             });
           }
         }]
@@ -65,9 +74,6 @@
 
       function linkFn(scope, elem, attrs) {
         scope.init();
-
-
-
       }
 
     }]);

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="TestApp">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <meta content="telephone=no" name="format-detection"/>
+  <style type="text/css">
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'STHeiti', 'Microsoft YaHei', Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+      font-size: 12px;
+    }
+
+    [ng-cloak] {
+      display: none;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid #ccc;
+    }
+
+    table th,
+    table td {
+      width: 20%;
+      padding: 5px;
+      box-sizing: border-box;
+    }
+
+    .data-list {
+    }
+
+    .table-head {
+      margin-bottom: 50px;
+      width: 100%;
+      top: 0;
+      position: fixed;
+    }
+
+    .table-head th {
+      background: #eee;
+      height: 50px;
+    }
+
+    .table-body {
+      margin-top: 50px;
+      color: #666;
+    }
+
+    table .has-more td {
+      padding: 14px 0;
+      background: #fff;
+      text-align: center;
+    }
+
+  </style>
+</head>
+<body ng-controller="MainCtrl as vm" ng-cloak>
+
+<h1>click to load more</h1>
+<div class="data-list">
+  <table border="1" class="table-head"
+         nx-infinite-scroll
+         page="vm.page"
+         rows="vm.rows"
+         has-more="vm.hasMore"
+         loading="vm.loading"
+         items="vm.items"
+         load="vm.load"
+         load-data="vm.loadData">
+    <thead>
+    <tr>
+      <th>id</th>
+      <th>姓名</th>
+      <th>年纪</th>
+      <th>昵称</th>
+      <th>创建日期</th>
+    </tr>
+    </thead>
+  </table>
+  <table border="1" class="table-body">
+    <tbody>
+    <tr ng-repeat="item in vm.items">
+      <td>{{item.id}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.age}}</td>
+      <td>{{item.nickname}}</td>
+      <td>{{item.date}}</td>
+    </tr>
+    </tbody>
+    <tr class="has-more" ng-if="vm.hasMore" ng-click="vm.load()">
+      <td colspan="5" ng-if="!vm.loading">加载更多</td>
+      <td colspan="5" ng-if="vm.loading">正在加载...</td>
+    </tr>
+  </table>
+</div>
+
+
+<script type="text/javascript" src="../bower_components/angular/angular.js"></script>
+<script type="text/javascript" src="../dist/js/angular-infinite-scroll.js"></script>
+<script type="text/javascript">
+  var TestModule = angular.module('TestApp', ['nx.widget'])
+    .controller('MainCtrl', function ($scope) {
+      var vm = this;
+      angular.extend(vm, {
+        items: [],
+        page: 1,
+        rows: 60,
+        loadData: _generateData,
+        loading: false,
+        hasMore: false
+      });
+
+      function _generateData() {
+        console.log('page:->', vm.page);
+        var items = [];
+        var length = vm.rows || 100;
+        for (var i = 0; i < length; i++) {
+          items.push({
+            id: vm.page + i,
+            name: '姓名' + vm.page + i,
+            age: 20 + vm.page + i,
+            nickname: 'fei' + vm.page + i,
+            date: '2015-01-02'
+          });
+        }
+        return items;
+      }
+    });
+</script>
+</body>
+</html>
