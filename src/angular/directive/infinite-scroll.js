@@ -76,12 +76,13 @@
           var timer = null;
 
           element.bind('scroll', function () {
-            if (el.scrollTop + el.offsetHeight >= el.scrollHeight - distance) {
-              $timeout.cancel(timer);  //does nothing, if timeout alrdy done
-              timer = $timeout(function () {   //Set timeout
+            $timeout.cancel(timer);
+            timer = $timeout(function () {   //Set timeout
+              if (el.scrollTop + el.offsetHeight >= el.scrollHeight - distance) {
+                //does nothing, if timeout alrdy done
                 scope.load();
-              }, debounce);
-            }
+              }
+            }, debounce);
           });
         }
       }
