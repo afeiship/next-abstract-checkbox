@@ -66,6 +66,7 @@
      distance="1"
      page="vm.page"
      rows="vm.rows"
+     enable-scroll="vm.enableScroll"
      has-more="vm.hasMore"
      loading="vm.loading"
      items="vm.items"
@@ -91,9 +92,12 @@
         <td>{{item.date}}</td>
       </tr>
       </tbody>
-      <tr class="has-more" ng-if="vm.hasMore" ng-click="vm.load()">
-        <td colspan="5" ng-if="!vm.loading">加载更多</td>
-        <td colspan="5" ng-if="vm.loading">正在加载...</td>
+      <tr class="has-more" ng-if="vm.hasMore">
+        <td colspan="5">正在加载...</td>
+      </tr>
+
+      <tr class="has-more" ng-if="!vm.hasMore">
+        <td colspan="5">没有更多啦!</td>
       </tr>
     </table>
   </div>
@@ -112,7 +116,8 @@
         rows: 30,
         loadData: _generateData,
         loading: false,
-        hasMore: false
+        hasMore: false,
+        enableScroll: true
       });
 
       function _generateData() {

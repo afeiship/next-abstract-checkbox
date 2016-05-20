@@ -9,14 +9,15 @@
   'use strict';
 
   angular.module('nx.widget')
-    .directive('nxInfiniteScroll', [function ($scope) {
+    .directive('nxInfiniteScroll', ['$timeout', function ($timeout) {
       return {
         restrict: 'A',
         scope: {
+          distance: '@',
+          enableScroll: '=',
           page: '=',
           rows: '=',
           loadData: '&',
-          responseHandler: '&',
           hasMore: '=',
           loading: '=',
           load: '=',
@@ -26,10 +27,6 @@
         controller: ["$scope", function ($scope) {
           $scope.init = init;
           $scope.load = load;
-          $scope._addItems = _addItems;
-          $scope._setItems = _setItems;
-          $scope.responseHandler = $scope.responseHandler || _addItems;
-
 
           function init() {
 
@@ -65,19 +62,10 @@
 
             returned.then(function (response) {
               responseData = response.data;
-              $scope.responseHandler.call($scope, responseData);
+              $scope.items = $scope.items.concat(responseData);
               $scope.hasMore = (responseData.length === $scope.rows);
               $scope.loading = false;
             });
-          }
-
-
-          function _addItems(inItems) {
-            $scope.items = $scope.items.concat(inItems);
-          }
-
-          function _setItems(inItems) {
-            $scope.items = inItems;
           }
 
         }]
@@ -87,16 +75,22 @@
       function linkFn(scope, element, attrs) {
         scope.init();
 
-        var offset = parseInt(attrs.threshold) || 0;
-        var e = element[0];
 
-        element.bind('scroll', function () {
-          if (e.scrollTop + e.offsetHeight >= e.scrollHeight - offset) {
-            console.log('should scroll!');
-            //scope.$apply(attrs.infiniteScroll);
+        if (scope.enableScroll) {
+          var distance = parseInt(attrs.distance) || 0;
+          var debounce = parseInt(attrs.debounce) || 600;
+          var el = element[0];
+          var timer = null;
 
-          }
-        });
+          element.bind('scroll', function () {
+            if (el.scrollTop + el.offsetHeight >= el.scrollHeight - distance) {
+              $timeout.cancel(timer);  //does nothing, if timeout alrdy done
+              timer = $timeout(function () {   //Set timeout
+                scope.load();
+              }, debounce);
+            }
+          });
+        }
       }
 
     }]);
