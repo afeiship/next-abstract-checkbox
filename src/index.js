@@ -2,7 +2,6 @@
   var global = typeof window !== 'undefined' ? window : this || Function('return this')();
   var nx = global.nx || require('@jswork/next');
   var nxRemove = nx.remove || require('@jswork/next-remove');
-  var nxToggle = nx.toggle || require('@jswork/next-toggle');
   var deepEqual = global.deepEqual || require('deep-equal');
   var defaults = { value: [], idKey: 'id', items: [] };
 
@@ -48,7 +47,7 @@
         return this.get();
       },
       unSelect: function (inId) {
-        !this.has(inId) && nxRemove(this.runtimeIds, [inId]);
+        this.has(inId) && nxRemove(this.runtimeIds, [inId]);
         return this.get();
       },
       unSelectMultiple: function (inIds) {
@@ -60,16 +59,13 @@
         return this.get();
       },
       toggle: function (inId, inValue) {
-        nxToggle(this.runtimeIds, [inId], inValue, this.options.idKey);
-        return this.get();
+        return inValue ? this.select(inId, inValue) : this.unSelect(inId);
       },
       toggleMultiple: function (inIds, inValue) {
-        nxToggle(this.runtimeIds, inIds, inValue, this.options.idKey);
-        return this.get();
+        return inValue ? this.selectMultiple(inIds) : this.unSelectMultiple(inIds);
       },
       toggleAll: function (inValue) {
-        this.runtimeIds = inValue ? [].concat(this.ids) : [];
-        return this.get();
+        return inValue ? this.selectAll() : this.unSelectAll();
       },
       __normalize__: function (inIds) {
         return (inIds || this.runtimeIds).slice();

@@ -58,10 +58,10 @@
         '22ba06aeec6e2bc08880b6eeb47ce27b'
       ]);
 
-      var res2 = checkboxHelper.unSelect(['4c4e97a96dc164db144452acdf993531']);
-      var res3 = checkboxHelper.unSelect(['22ba06aeec6e2bc08880b6eeb47ce27b']);
+      var res2 = checkboxHelper.unSelect('4c4e97a96dc164db144452acdf993531');
+      var res3 = checkboxHelper.unSelect('22ba06aeec6e2bc08880b6eeb47ce27b');
 
-      expect(res2).toEqual(['4c4e97a96dc164db144452acdf993531']);
+      expect(res2).toEqual(['22ba06aeec6e2bc08880b6eeb47ce27b']);
       expect(res3).toEqual([]);
     });
 
@@ -109,6 +109,66 @@
       expect(checkboxHelper.indeterminate).toBe(false);
       checkboxHelper.unSelectAll();
       expect(checkboxHelper.indeterminate).toBe(false);
+    });
+
+    test('method: toggle', () => {
+      var checkboxHelper = new NxAbstractCheckbox({
+        value: ['ba60e63291305df804965624f788a70b', '75debe6a00010d08188aa3e1e30dc464'],
+        idKey: 'uuid',
+        items: data
+      });
+
+      var res1 = checkboxHelper.toggle('ba60e63291305df804965624f788a70b', true);
+      var res2 = checkboxHelper.toggle('ba60e63291305df804965624f788a70b', false);
+      expect(res1).toEqual([
+        'ba60e63291305df804965624f788a70b',
+        '75debe6a00010d08188aa3e1e30dc464'
+      ]);
+      expect(res2).toEqual(['75debe6a00010d08188aa3e1e30dc464']);
+    });
+
+    test('method: toggleMultiple', () => {
+      var checkboxHelper = new NxAbstractCheckbox({
+        value: [
+          'ba60e63291305df804965624f788a70b',
+          '75debe6a00010d08188aa3e1e30dc464',
+          '29958b6cd9985bbbfefe1c665f28c739'
+        ],
+        idKey: 'uuid',
+        items: data
+      });
+
+      var res1 = checkboxHelper.toggleMultiple(
+        ['5f2782eaa8ddbbe8c2c98822084c5532', '29958b6cd9985bbbfefe1c665f28c739'],
+        true
+      );
+      var res2 = checkboxHelper.toggleMultiple(
+        ['ba60e63291305df804965624f788a70b', '75debe6a00010d08188aa3e1e30dc464'],
+        false
+      );
+
+      expect(res1).toEqual([
+        'ba60e63291305df804965624f788a70b',
+        '75debe6a00010d08188aa3e1e30dc464',
+        '29958b6cd9985bbbfefe1c665f28c739',
+        '5f2782eaa8ddbbe8c2c98822084c5532'
+      ]);
+
+      expect(res2).toEqual([
+        '29958b6cd9985bbbfefe1c665f28c739',
+        '5f2782eaa8ddbbe8c2c98822084c5532'
+      ]);
+    });
+
+    test('method: toggleAll', () => {
+      var checkboxHelper = new NxAbstractCheckbox({
+        idKey: 'uuid',
+        items: data
+      });
+
+      expect(checkboxHelper.get()).toEqual([]);
+      expect(checkboxHelper.toggleAll(true).length).toBe(16);
+      expect(checkboxHelper.toggleAll(false).length).toBe(0);
     });
   });
 })();
