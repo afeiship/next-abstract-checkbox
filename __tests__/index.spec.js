@@ -16,8 +16,8 @@
       });
 
       expect(checkboxHelper.get()).toEqual([
-        '75debe6a00010d08188aa3e1e30dc464',
         'ba60e63291305df804965624f788a70b',
+        '75debe6a00010d08188aa3e1e30dc464'
       ]);
     });
 
@@ -33,6 +33,82 @@
       var res = checkboxHelper.select('ba60e63291305df804965624f788a70b');
       checkboxHelper.select('ba60e63291305df804965624f788a70b');
       expect(res).toEqual(['ba60e63291305df804965624f788a70b']);
+    });
+
+    test('api:selectMultiple', () => {
+      var checkboxHelper = new NxAbstractCheckbox({ idKey: 'uuid', items: data });
+      var res = checkboxHelper.selectMultiple([
+        '4c4e97a96dc164db144452acdf993531',
+        '22ba06aeec6e2bc08880b6eeb47ce27b'
+      ]);
+
+      expect(res).toEqual(['4c4e97a96dc164db144452acdf993531', '22ba06aeec6e2bc08880b6eeb47ce27b']);
+    });
+
+    test('api:selectAll', () => {
+      var checkboxHelper = new NxAbstractCheckbox({ idKey: 'uuid', items: data });
+      var res = checkboxHelper.selectAll();
+      expect(res.length).toBe(16);
+    });
+
+    test('api:unselect', () => {
+      var checkboxHelper = new NxAbstractCheckbox({ idKey: 'uuid', items: data });
+      var res1 = checkboxHelper.selectMultiple([
+        '4c4e97a96dc164db144452acdf993531',
+        '22ba06aeec6e2bc08880b6eeb47ce27b'
+      ]);
+
+      var res2 = checkboxHelper.unSelect(['4c4e97a96dc164db144452acdf993531']);
+      var res3 = checkboxHelper.unSelect(['22ba06aeec6e2bc08880b6eeb47ce27b']);
+
+      expect(res2).toEqual(['4c4e97a96dc164db144452acdf993531']);
+      expect(res3).toEqual([]);
+    });
+
+    test('api:unSelectMultiple', () => {
+      var checkboxHelper = new NxAbstractCheckbox({ idKey: 'uuid', items: data });
+      var res1 = checkboxHelper.selectMultiple([
+        '4c4e97a96dc164db144452acdf993531',
+        '22ba06aeec6e2bc08880b6eeb47ce27b',
+        '5f2782eaa8ddbbe8c2c98822084c5532'
+      ]);
+
+      var res2 = checkboxHelper.unSelectMultiple([
+        '4c4e97a96dc164db144452acdf993531',
+        '5f2782eaa8ddbbe8c2c98822084c5532'
+      ]);
+
+      expect(res2).toEqual(['22ba06aeec6e2bc08880b6eeb47ce27b']);
+    });
+
+    test('api:unSelectAll', () => {
+      var checkboxHelper = new NxAbstractCheckbox({ idKey: 'uuid', items: data });
+      var res1 = checkboxHelper.selectMultiple([
+        '4c4e97a96dc164db144452acdf993531',
+        '22ba06aeec6e2bc08880b6eeb47ce27b',
+        '5f2782eaa8ddbbe8c2c98822084c5532'
+      ]);
+      var res2 = checkboxHelper.unSelectAll();
+      expect(res1.length).toBe(3);
+      expect(res2.length).toBe(0);
+    });
+
+    test('prop:checked all', () => {
+      var checkboxHelper = new NxAbstractCheckbox({ idKey: 'uuid', items: data });
+      checkboxHelper.select(['4c4e97a96dc164db144452acdf993531']);
+      expect(checkboxHelper.checked).toBe(false);
+      checkboxHelper.selectAll();
+      expect(checkboxHelper.checked).toBe(true);
+    });
+
+    test('prop:indeterminate all', () => {
+      var checkboxHelper = new NxAbstractCheckbox({ idKey: 'uuid', items: data });
+      checkboxHelper.select(['4c4e97a96dc164db144452acdf993531']);
+      expect(checkboxHelper.indeterminate).toBe(true);
+      checkboxHelper.selectAll();
+      expect(checkboxHelper.indeterminate).toBe(false);
+      checkboxHelper.unSelectAll();
+      expect(checkboxHelper.indeterminate).toBe(false);
     });
   });
 })();

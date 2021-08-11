@@ -40,6 +40,7 @@
   },
   "dependencies": {
     "@jswork/next-remove": "^1.0.0",
-    "@jswork/next-toggle": "^1.0.0"
+    "@jswork/next-toggle": "^1.0.0",
+    "deep-equal": "^2.0.5"
   }
 }

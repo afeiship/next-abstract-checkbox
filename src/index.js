@@ -3,12 +3,19 @@
   var nx = global.nx || require('@jswork/next');
   var nxRemove = nx.remove || require('@jswork/next-remove');
   var nxToggle = nx.toggle || require('@jswork/next-toggle');
+  var deepEqual = global.deepEqual || require('deep-equal');
   var defaults = { value: [], idKey: 'id', items: [] };
 
   var NxAbstractCheckbox = nx.declare('nx.AbstractCheckbox', {
     properties: {
-      checked: function () {},
-      indeterminate: function () {},
+      checked: function () {
+        return this.__equal__();
+      },
+      indeterminate: function () {
+        if (this.runtimeIds.length === 0) return false;
+        if (this.runtimeIds.length < this.ids.length) return true;
+        return false;
+      },
       ids: function () {
         return this.options.items.map((item) => nx.get(item, this.options.idKey));
       }
@@ -16,36 +23,61 @@
     methods: {
       init: function (inOptions) {
         this.options = nx.mix(null, defaults, inOptions);
-        this.itemIds = this.normalize(this.options.value);
+        this.runtimeIds = this.__normalize__(this.options.value);
       },
       get: function () {
-        return this.normalize();
+        return this.__normalize__();
       },
       has: function (inId) {
-        return this.itemIds.indexOf(inId) !== -1;
+        return this.runtimeIds.indexOf(inId) !== -1;
       },
-      // 单选框选中
       select: function (inId) {
-        !this.has(inId) && this.itemIds.push(inId);
-        return this.normalize();
+        !this.has(inId) && this.runtimeIds.push(inId);
+        return this.get();
       },
-      // 单选框取消选中
-      unselect: function (inId) {
-        !this.has(inId) && nxRemove(this.itemIds, [inId]);
-        return this.normalize();
+      selectMultiple: function (inIds) {
+        inIds.forEach(function (id) {
+          if (!this.has(id)) {
+            this.runtimeIds.push(id);
+          }
+        }, this);
+        return this.get();
       },
-      // 单选框点击
+      selectAll: function () {
+        this.runtimeIds = this.ids;
+        return this.get();
+      },
+      unSelect: function (inId) {
+        !this.has(inId) && nxRemove(this.runtimeIds, [inId]);
+        return this.get();
+      },
+      unSelectMultiple: function (inIds) {
+        nxRemove(this.runtimeIds, inIds);
+        return this.get();
+      },
+      unSelectAll: function () {
+        this.runtimeIds = [];
+        return this.get();
+      },
       toggle: function (inId, inValue) {
-        nxToggle(this.itemIds, [inId], inValue, this.options.idKey);
-        return this.normalize();
+        nxToggle(this.runtimeIds, [inId], inValue, this.options.idKey);
+        return this.get();
+      },
+      toggleMultiple: function (inIds, inValue) {
+        nxToggle(this.runtimeIds, inIds, inValue, this.options.idKey);
+        return this.get();
       },
       toggleAll: function (inValue) {
-        this.itemIds = inValue ? [].concat(this.ids) : [];
-        return this.normalize();
+        this.runtimeIds = inValue ? [].concat(this.ids) : [];
+        return this.get();
       },
-      // 统一处理id
-      normalize: function (inIds) {
-        return (inIds || this.itemIds).sort().slice();
+      __normalize__: function (inIds) {
+        return (inIds || this.runtimeIds).slice();
+      },
+      __equal__: function () {
+        var ids_ = this.ids.slice().sort();
+        var runtimeIds_ = this.runtimeIds.slice().sort();
+        return deepEqual(ids_, runtimeIds_);
       }
     }
   });

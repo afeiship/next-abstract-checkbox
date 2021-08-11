@@ -12,9 +12,18 @@ npm install -S @jswork/next-abstract-checkbox
 ```
 
 ## apis
-| api | params | description   |
-|-----|--------|---------------|
-| get | -      | desc balabala |
+| api              | params | description                                  |
+| ---------------- | ------ | -------------------------------------------- |
+| checked          | -      | Property: Get the list checked status.       |
+| indeterminate    | -      | Property: Get the list indeterminate status. |
+| ids              | -      | Property: Get the all the list ids.          |
+| select           | -      | Method: Select checkbox by id.               |
+| selectMultiple   | -      | Method: Select checkbox by id list.          |
+| selectAll        | -      | Method: Select all the checkbox.             |
+| unSelect         | -      | Method: Deselct checkbox by id.              |
+| unSelectMultiple | -      | Method: Deselct checkbox by id list.         |
+| unSelectAll      | -      | Method: Deselct all the checkbox.            |
+| get              | -      | Method: Get runtime ids list.                |
 
 ## usage
 ```js
