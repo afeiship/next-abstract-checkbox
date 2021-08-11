@@ -6,6 +6,8 @@
 [![size][size-image]][size-url]
 [![download][download-image]][download-url]
 
+![](./docs/Checkbox.png)
+
 ## installation
 ```bash
 npm install -S @jswork/next-abstract-checkbox
