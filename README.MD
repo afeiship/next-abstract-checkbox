@@ -29,7 +29,10 @@ npm install -S @jswork/next-abstract-checkbox
 ```js
 import NxAbstractCheckbox from '@jswork/next-abstract-checkbox';
 
-// code goes here:
+const checkboxer = new NxAbstractCheckbox({ idKey: 'uuid', items:[] });
+const res = checkboxer.select(['4c4e97a96dc164db144452acdf993531']);
+
+// ['4c4e97a96dc164db144452acdf993531']
 ```
 
 ## license
