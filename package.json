@@ -1,8 +1,8 @@
 {
-  "name": "@jswork/next-checkbox-helper",
+  "name": "@jswork/next-abstract-checkbox",
   "version": "1.0.0",
-  "description": "Checkbox helper for next.",
-  "homepage": "https://github.com/afeiship/next-checkbox-helper",
+  "description": "Abstract checkbox for next.",
+  "homepage": "https://github.com/afeiship/next-abstract-checkbox",
   "author": {
     "name": "afei",
     "email": "1290657123@qq.com"

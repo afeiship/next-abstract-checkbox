@@ -1,7 +1,7 @@
 (function () {
-  const NxCheckboxHelper = require('../src');
+  const NxAbstractCheckbox = require('../src');
 
-  describe('NxCheckboxHelper.methods', function () {
+  describe('NxAbstractCheckbox.methods', function () {
     let data;
     beforeEach(function () {
       const res = require('./resouces.json');
@@ -9,7 +9,7 @@
     });
 
     test('api:new with value will be sort', () => {
-      var checkboxHelper = new NxCheckboxHelper({
+      var checkboxHelper = new NxAbstractCheckbox({
         value: ['ba60e63291305df804965624f788a70b', '75debe6a00010d08188aa3e1e30dc464'],
         idKey: 'uuid',
         items: data
@@ -22,14 +22,14 @@
     });
 
     test('api:select push an id', function () {
-      var checkboxHelper = new NxCheckboxHelper({ idKey: 'uuid', items: data });
+      var checkboxHelper = new NxAbstractCheckbox({ idKey: 'uuid', items: data });
       var res = checkboxHelper.select('ba60e63291305df804965624f788a70b');
       // console.log(res);
       expect(res).toEqual(['ba60e63291305df804965624f788a70b']);
     });
 
     test('api:select push the same id', function () {
-      var checkboxHelper = new NxCheckboxHelper({ idKey: 'uuid', items: data });
+      var checkboxHelper = new NxAbstractCheckbox({ idKey: 'uuid', items: data });
       var res = checkboxHelper.select('ba60e63291305df804965624f788a70b');
       checkboxHelper.select('ba60e63291305df804965624f788a70b');
       expect(res).toEqual(['ba60e63291305df804965624f788a70b']);

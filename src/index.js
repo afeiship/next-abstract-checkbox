@@ -5,9 +5,7 @@
   var nxToggle = nx.toggle || require('@jswork/next-toggle');
   var defaults = { value: [], idKey: 'id', items: [] };
 
-  // @jswork/next-unique
-
-  var NxCheckboxHelper = nx.declare('nx.CheckboxHelper', {
+  var NxAbstractCheckbox = nx.declare('nx.AbstractCheckbox', {
     properties: {
       checked: function () {},
       indeterminate: function () {},
@@ -53,6 +51,6 @@
   });
 
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = NxCheckboxHelper;
+    module.exports = NxAbstractCheckbox;
   }
 })();
