@@ -65,7 +65,8 @@
         return inValue ? this.selectMultiple(inIds) : this.unSelectMultiple(inIds);
       },
       toggleAll: function (inValue) {
-        return inValue ? this.selectAll() : this.unSelectAll();
+        var value = typeof inValue === 'undefined' ? !this.get().length : inValue;
+        return value ? this.selectAll() : this.unSelectAll();
       },
       __normalize__: function (inIds) {
         return (inIds || this.runtimeIds).slice();

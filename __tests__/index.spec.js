@@ -160,7 +160,7 @@
       ]);
     });
 
-    test('method: toggleAll', () => {
+    test('method: toggleAll with boolean value', () => {
       var checkboxHelper = new NxAbstractCheckbox({
         idKey: 'uuid',
         items: data
@@ -169,6 +169,18 @@
       expect(checkboxHelper.get()).toEqual([]);
       expect(checkboxHelper.toggleAll(true).length).toBe(16);
       expect(checkboxHelper.toggleAll(false).length).toBe(0);
+    });
+
+
+    test('method: toggleAll with void value', () => {
+      var checkboxHelper = new NxAbstractCheckbox({
+        idKey: 'uuid',
+        items: data
+      });
+
+      expect(checkboxHelper.get()).toEqual([]);
+      expect(checkboxHelper.toggleAll().length).toBe(16);
+      expect(checkboxHelper.toggleAll().length).toBe(0);
     });
   });
 })();
