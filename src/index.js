@@ -3,7 +3,7 @@
   var nx = global.nx || require('@jswork/next');
   var nxRemove = nx.remove || require('@jswork/next-remove');
   var deepEqual = global.deepEqual || require('deep-equal');
-  var defaults = { value: [], idKey: 'id', items: [] };
+  var defaults = { value: [], idKey: 'id', items: [], onChange: nx.noop };
 
   var NxAbstractCheckbox = nx.declare('nx.AbstractCheckbox', {
     properties: {
@@ -32,6 +32,7 @@
       },
       select: function (inId) {
         !this.has(inId) && this.runtimeIds.push(inId);
+        this.__change__();
         return this.get();
       },
       selectMultiple: function (inIds) {
@@ -40,22 +41,27 @@
             this.runtimeIds.push(id);
           }
         }, this);
+        this.__change__();
         return this.get();
       },
       selectAll: function () {
         this.runtimeIds = this.ids;
+        this.__change__();
         return this.get();
       },
       unSelect: function (inId) {
         this.has(inId) && nxRemove(this.runtimeIds, [inId]);
+        this.__change__();
         return this.get();
       },
       unSelectMultiple: function (inIds) {
         nxRemove(this.runtimeIds, inIds);
+        this.__change__();
         return this.get();
       },
       unSelectAll: function () {
         this.runtimeIds = [];
+        this.__change__();
         return this.get();
       },
       toggle: function (inId, inValue) {
@@ -67,6 +73,10 @@
       toggleAll: function (inValue) {
         var value = typeof inValue === 'undefined' ? !this.get().length : inValue;
         return value ? this.selectAll() : this.unSelectAll();
+      },
+      __change__: function () {
+        var target = { value: this.get() };
+        this.options.onChange({ target });
       },
       __normalize__: function (inIds) {
         return (inIds || this.runtimeIds).slice();
