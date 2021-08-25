@@ -6,7 +6,7 @@
 [![size][size-image]][size-url]
 [![download][download-image]][download-url]
 
-![](./docs/Checkbox.png)
+<img src="./docs/Checkbox.png" width="100%"/>
 
 ## installation
 ```bash
