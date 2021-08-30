@@ -24,6 +24,11 @@
         this.options = nx.mix(null, defaults, inOptions);
         this.runtimeIds = this.__normalize__(this.options.value);
       },
+      set: function (inIds) {
+        this.runtimeIds = inIds;
+        this.__change__();
+        return this.get();
+      },
       get: function () {
         return this.__normalize__();
       },
